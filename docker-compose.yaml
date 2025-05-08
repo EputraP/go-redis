@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-server
+    ports:
+      - "6379:6379"
+    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "350mb", "--maxmemory-policy", "allkeys-lru"]
+    networks:
+      - testo
+    volumes:
+      - redis-data:/data
+    deploy:
+      resources:
+        limits:
+          memory: 400M
+    mem_limit: 400m  
+  redis-insight:
+    image: redis/redisinsight:latest
+    container_name: redis-insight
+    ports:
+      - "5540:5540"
+    networks:
+      - testo
+    depends_on:
+      - redis
+
+volumes:
+  redis-data:
+    driver_opts:
+      type: tmpfs
+      device: tmpfs
+      o: size=100m
+
+networks:
+  testo:
+    external: true

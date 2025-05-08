@@ -1,1 +1,18 @@
-"# go-redis" 
+"# go-redis"
+- based on key-value
+- the data will be stored as pair (key-value)
+- we can set the redis to stored in the disk, but when we access the redis data, redis will serve with the data in the memory 
+- the disk data used for backup only
+- when we used redis
+    - slow database
+        - first you should try to tuning the db (put indexing, improve query performance, etc)
+        - if not improved so much, try to use redis as db caching
+        - the flow:
+            - client make a request
+            - app server check redis cache:
+                - if cache hit, return cached data
+                - if cache miss, quer the database
+            - save DB result to redis for future request
+            - return data to the client    
+    - slow the third party apllication 
+    - heavy app process
