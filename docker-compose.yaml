@@ -6,9 +6,15 @@ services:
     container_name: redis-server
     ports:
       - "6379:6379"
-    command: ["redis-server", "--appendonly", "yes", "--maxmemory", "350mb", "--maxmemory-policy", "allkeys-lru"]
+    command: [
+      "redis-server", 
+      "--appendonly", "yes", 
+      "--maxmemory", "350mb", 
+      "--maxmemory-policy", "allkeys-lru",
+       "--databases", "4"
+    ]
     networks:
-      - testo
+      - redis-network
     volumes:
       - redis-data:/data
     deploy:
@@ -16,13 +22,23 @@ services:
         limits:
           memory: 400M
     mem_limit: 400m  
+  redis-monitor:
+    image: redis:latest
+    container_name: redis-monitor
+    command: redis-cli -h redis MONITOR >> redis-monitor.log
+    depends_on:
+      - redis
+    networks:
+      - redis-network
+    stdin_open: true
+    tty: true
   redis-insight:
     image: redis/redisinsight:latest
     container_name: redis-insight
     ports:
       - "5540:5540"
     networks:
-      - testo
+      - redis-network
     depends_on:
       - redis
 
@@ -34,5 +50,5 @@ volumes:
       o: size=100m
 
 networks:
-  testo:
+  redis-network:
     external: true

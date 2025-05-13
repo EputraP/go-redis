@@ -16,3 +16,69 @@
             - return data to the client    
     - slow the third party apllication 
     - heavy app process
+- redis doesn't allow to create databasename, it uses integer number to define the database
+- the default redis database is 0
+- the default value for maximum database is 16
+- we can set the maximum on the redis config (docker => redis config in docker compose)
+- if we set the maximum database, so redis will create it and we only select the database
+- database operation
+    - select database   = select database number
+- string operation
+    - string operation
+        - set key value     = change string value from key
+        - get key           = get value using key
+        - exist key         = check a key has a value
+        - del key [key...]  = delete key
+        - append key value  = append value to existing value from specific key
+        - keys pattern = search key using pattern
+    - the keys pattern is not recomended because it will scan all datas from redis
+    - string range operation
+        - setrange key offset value     = change value from defined offset
+        - getrange key start end    = get value from defined range
+    - multiple string data operation
+    - mget key [key ...]    = get the value of all the given keys
+    - mset key value [key value ..] = set multiple keys to multiple value
+- expiration
+    - when we set 0 as the expiration, by default redis will stored the key permanently until we remove it
+    - we can set the expiration value for remove the key automaticaly by the redis
+    - expire key seconds    = set a keys time to live in second (for existing key)
+    - setex key seconds value   = set the value and expiration of the key
+    - expire at = for specific time stamp
+    - ttl key     = get time to live for a key (get the remaining duration)
+- increament and decreatment
+    - we can do the incr and decr operation in the code by get the key value, add the value, and set the key
+    - but that process can make a race condition when the same user updating the same key at the same time
+    - redis provide us the increament and decrament operation
+    - increament and decremenet operation
+        - incr key      = increment the integer value of the key by one
+        - decr key      = decrement the integer value of the key by one
+        - incrby key increment  = increment the integer value of a key by the given amount
+        - decrby key decrement  = decrement the integer value of a key by the given number
+    - if we increment a key that doesn't exist, redis will create the key with value 0 and increment the 0 value
+- flush
+    - delete all redis data
+    - flush operation
+        - flushdb   = remove all keys from the current database
+        - flushall  = remove all keys from all databases
+- pipeline
+    - used to group multiple commands and send them to the server in a single network round-trip — improving performance significantly when issuing many commands
+    - benefits
+        - Reduces network overhead
+        - Improves performance when setting/getting many keys
+        - Still executes commands sequentially, but faster
+    - Errors on individual commands don’t break the entire pipeline — inspect each result separately
+- transaction
+    - Redis supports transactions to execute multiple commands atomically using MULTI, EXEC, and WATCH.
+    - ensures that if multiple commands are part of a transaction, either all of them will be executed successfully, or none of them will be.
+    - transaction operation
+        - multi     = This command starts a transaction. After issuing MULTI, Redis will queue up the commands that follow without executing them immediatel
+        - exec      = This command executes all the commands in the transaction queue that were issued after MULTI. All the commands are executed atomically, meaning no other client can intervene during the transaction
+        - WATCH     = This command is used to monitor one or more keys for changes before starting a transaction. If any of the keys are modified by other clients before the transaction is executed, the transaction will be aborted when EXEC is called.
+    - in go
+        - wathc => watch
+        - multi => TxPipeline
+        - exec => exec
+        - multi + exec => TxPipelined
+- monitor
+    - listen for all requests received by the server in real time
+    - 
