@@ -14,7 +14,7 @@ func main() {
 	rdb := redis.NewClient(&redis.Options{
 		Addr: "localhost:6379", // or use your container IP if needed
 		// Password: "",         // set password if needed
-		DB: 1, // use default DB
+		DB: 0, // use default DB
 	})
 
 	err := rdb.Set(ctx, "key", "value", 0).Err()

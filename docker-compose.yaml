@@ -25,11 +25,13 @@ services:
   redis-monitor:
     image: redis:latest
     container_name: redis-monitor
-    command: redis-cli -h redis MONITOR >> redis-monitor.log
+    entrypoint: sh -c "redis-cli -h redis MONITOR > /logs/redis-monitor.log"
     depends_on:
       - redis
     networks:
       - redis-network
+    volumes:
+      - ./logs:/logs
     stdin_open: true
     tty: true
   redis-insight:
