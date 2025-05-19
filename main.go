@@ -165,6 +165,20 @@ func main() {
 		return nil
 	}, "balance")
 
+	// server information operations
+	info, err := rdb.Info(ctx, "all").Result()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(info)
+
+	// client information operations
+	res, err := rdb.Do(ctx, "CLIENT", "LIST").Text()
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(res)
+
 	// If key doesn't exist
 	val2, err := rdb.Get(ctx, "key").Result()
 	if err == redis.Nil {

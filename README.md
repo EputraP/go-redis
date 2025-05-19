@@ -81,4 +81,14 @@
         - multi + exec => TxPipelined
 - monitor
     - listen for all requests received by the server in real time
-    - 
+    - in docker compose
+- server information operation
+    - operation:
+        - info  : get information and statistic about the server
+        - config get <key> : get value of configuration parameter from redis.conf
+- client information operation
+    - operation:
+        - client list : Get the list of client connection
+        - client id : return the client id for the current connection
+        - client kill ip:port   : kill the connection of the client
+        
