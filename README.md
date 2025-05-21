@@ -91,4 +91,27 @@
         - client list : Get the list of client connection
         - client id : return the client id for the current connection
         - client kill ip:port   : kill the connection of the client
-        
+- Redis data structure
+    - lists         : linked list data structure that contains string data
+    - sets          : non-ordered string data collection
+    - hashes        : key-value data structure
+    - sorted sets   : like sets, but ordered
+    - stream        : like log, appended data
+    - geospatial    : coordinate data structure
+    - hyperloglog   : data structure that uses for cardinal estimation from set
+- Lists
+    - a linked list data structure that contains string data
+    - like an array, where each data contains index
+    - can be used for Queue or Stack
+    - operation:
+        - LPUSH : Insert all the specified values at the head of the list stored at key
+        - RPUSH : Insert all the specified values at the tail of the list stored at key
+        - RPOP : Removes and returns the last elements of the list stored at key
+        - LPOP : Removes and returns the first elements of the list stored at key
+        - LRANGE : Retreives All data (start 0, stop -1)
+    - use cases:
+        - Task Queues/Job Queues (Background job processing, worker queues)
+        - Message Queues (Store recent messages in a chat room or notifications)
+        - Recent Activity Feed / Audit Logs (Store recent user actions or system events)
+        - Rate Limiting / Event Buffering (Temporarily buffer events and process them in batches)
+        - Pipeline Buffers for Microservices (Buffer outgoing data from one service to be picked up by another)
